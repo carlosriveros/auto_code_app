@@ -57,7 +57,15 @@
       "WebFetch(domain:www.lovable.dev)",
       "WebFetch(domain:www.windsurf.ai)",
       "WebFetch(domain:windsurf.com)",
-      "WebFetch(domain:www.noodl.net)"
+      "WebFetch(domain:www.noodl.net)",
+      "Bash(railway:*)",
+      "Bash(gh repo list:*)",
+      "Bash(gh:*)",
+      "Bash(git config:*)",
+      "Read(//Users/carlos_riveros/**)",
+      "Bash(git remote set-url:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
