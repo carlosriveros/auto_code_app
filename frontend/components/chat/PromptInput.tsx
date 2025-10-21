@@ -39,7 +39,7 @@ export function PromptInput({ onSend, disabled }: PromptInputProps) {
   };
 
   return (
-    <div className="border-t bg-white px-3 sm:px-4 py-3 mb-16 sm:mb-0 safe-bottom">
+    <div className="fixed bottom-16 sm:bottom-0 left-0 right-0 border-t bg-white px-3 sm:px-4 py-3 z-40">
       <form onSubmit={handleSubmit} className="flex gap-2 max-w-4xl mx-auto">
         <textarea
           ref={textareaRef}

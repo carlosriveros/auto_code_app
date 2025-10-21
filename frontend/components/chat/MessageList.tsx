@@ -46,7 +46,7 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 space-y-4 sm:space-y-6 scrollable">
+    <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 space-y-4 sm:space-y-6 scrollable pb-40 sm:pb-24">
       {messages.map((message, index) => (
         <Message key={index} message={message} />
       ))}
@@ -58,8 +58,8 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
         </div>
       )}
 
-      {/* Extra spacing for bottom nav */}
-      <div className="h-24" ref={bottomRef} />
+      {/* Extra spacing for fixed input + bottom nav */}
+      <div ref={bottomRef} />
     </div>
   );
 }
