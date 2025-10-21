@@ -69,8 +69,12 @@ export function ChatInterface() {
         || error?.message
         || 'Failed to send message';
 
-      toast.error('Message failed', {
-        description: errorMessage,
+      const isTimeout = error?.code === 'ECONNABORTED' || errorMessage.includes('timeout');
+
+      toast.error(isTimeout ? 'Request timed out' : 'Message failed', {
+        description: isTimeout
+          ? 'Claude is taking longer than usual. Check Files tab - changes may have been saved.'
+          : errorMessage,
         action: context?.userMessage ? {
           label: 'Retry',
           onClick: () => {
@@ -81,9 +85,14 @@ export function ChatInterface() {
         } : undefined,
       });
 
-      // Only revert on network/critical errors, not on backend errors
-      // Backend errors might have still processed the request
-      const isNetworkError = !error?.response && error?.message?.includes('Network');
+      // Refresh file list even on timeout - backend might have completed
+      if (isTimeout) {
+        queryClient.invalidateQueries({ queryKey: ['files', projectId] });
+      }
+
+      // Only revert on network/critical errors, not on backend errors or timeouts
+      // Backend might have still processed the request
+      const isNetworkError = !error?.response && error?.message?.includes('Network') && !isTimeout;
       if (isNetworkError && context?.previousMessages) {
         setMessages(context.previousMessages);
       }

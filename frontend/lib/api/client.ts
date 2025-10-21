@@ -57,23 +57,23 @@ class APIClient {
     localStorage.setItem('auth_token', token);
   }
 
-  async get<T>(url: string, params?: any): Promise<T> {
-    const response = await this.client.get<T>(url, { params });
+  async get<T>(url: string, params?: any, options?: { timeout?: number }): Promise<T> {
+    const response = await this.client.get<T>(url, { params, timeout: options?.timeout });
     return response.data;
   }
 
-  async post<T>(url: string, data?: any): Promise<T> {
-    const response = await this.client.post<T>(url, data);
+  async post<T>(url: string, data?: any, options?: { timeout?: number }): Promise<T> {
+    const response = await this.client.post<T>(url, data, { timeout: options?.timeout });
     return response.data;
   }
 
-  async put<T>(url: string, data?: any): Promise<T> {
-    const response = await this.client.put<T>(url, data);
+  async put<T>(url: string, data?: any, options?: { timeout?: number }): Promise<T> {
+    const response = await this.client.put<T>(url, data, { timeout: options?.timeout });
     return response.data;
   }
 
-  async delete<T>(url: string): Promise<T> {
-    const response = await this.client.delete<T>(url);
+  async delete<T>(url: string, options?: { timeout?: number }): Promise<T> {
+    const response = await this.client.delete<T>(url, { timeout: options?.timeout });
     return response.data;
   }
 }

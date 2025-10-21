@@ -18,7 +18,8 @@ export const promptsApi = {
     projectId: string,
     data: SendPromptData
   ): Promise<PromptResponse> {
-    return apiClient.post(`/api/projects/${projectId}/prompt`, data);
+    // Use 90 second timeout for Claude API calls (they can take a while for complex prompts)
+    return apiClient.post(`/api/projects/${projectId}/prompt`, data, { timeout: 90000 });
   },
 
   async getConversation(projectId: string): Promise<{
