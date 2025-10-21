@@ -178,7 +178,7 @@ export function ChatInterface() {
       <button
         onClick={handleDeploy}
         disabled={deployMutation.isPending}
-        className="fixed bottom-24 sm:bottom-8 right-4 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center z-40 touch-target group"
+        className="fixed bottom-28 sm:bottom-8 right-4 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center z-[60] touch-target group"
         title={deployMutation.isPending ? "Deploying..." : "Deploy to production"}
       >
         {deployMutation.isPending ? (
