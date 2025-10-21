@@ -9,6 +9,7 @@ import { Message } from '@/lib/types';
 import { MessageList } from './MessageList';
 import { PromptInput } from './PromptInput';
 import { Loader2, Rocket, ExternalLink, CheckCircle2, XCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function ChatInterface() {
   const params = useParams();
@@ -45,7 +46,7 @@ export function ChatInterface() {
         timestamp: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, newMessage]);
-      return { previousMessages: messages };
+      return { previousMessages: messages, userMessage: message };
     },
     onSuccess: (data) => {
       // Add assistant response
@@ -59,11 +60,31 @@ export function ChatInterface() {
       // Invalidate queries to refresh file list if files were modified
       if (data.fileOperations.length > 0) {
         queryClient.invalidateQueries({ queryKey: ['files', projectId] });
+        toast.success(`Updated ${data.fileOperations.length} file${data.fileOperations.length > 1 ? 's' : ''}`);
       }
     },
-    onError: (_error, _variables, context) => {
-      // Revert to previous messages on error
-      if (context?.previousMessages) {
+    onError: (error: any, _variables, context) => {
+      // Show error toast instead of removing messages
+      const errorMessage = error?.response?.data?.error?.message
+        || error?.message
+        || 'Failed to send message';
+
+      toast.error('Message failed', {
+        description: errorMessage,
+        action: context?.userMessage ? {
+          label: 'Retry',
+          onClick: () => {
+            if (context.userMessage) {
+              sendMutation.mutate(context.userMessage);
+            }
+          }
+        } : undefined,
+      });
+
+      // Only revert on network/critical errors, not on backend errors
+      // Backend errors might have still processed the request
+      const isNetworkError = !error?.response && error?.message?.includes('Network');
+      if (isNetworkError && context?.previousMessages) {
         setMessages(context.previousMessages);
       }
     },
@@ -72,9 +93,34 @@ export function ChatInterface() {
   // Deploy mutation
   const deployMutation = useMutation({
     mutationFn: () => deploymentsApi.deploy(projectId),
+    onMutate: () => {
+      toast.loading('Deploying to Vercel...', { id: 'deploy' });
+    },
     onSuccess: (data) => {
       // Invalidate deployment queries
       queryClient.invalidateQueries({ queryKey: ['deployment', projectId] });
+      toast.success('Deployed successfully!', {
+        id: 'deploy',
+        description: 'Your app is now live',
+        action: {
+          label: 'View',
+          onClick: () => window.open(data.deployUrl, '_blank'),
+        },
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data?.error?.message
+        || error?.message
+        || 'Deployment failed';
+
+      toast.error('Deployment failed', {
+        id: 'deploy',
+        description: errorMessage,
+        action: {
+          label: 'Retry',
+          onClick: () => deployMutation.mutate(),
+        },
+      });
     },
   });
 
@@ -178,7 +224,7 @@ export function ChatInterface() {
       <button
         onClick={handleDeploy}
         disabled={deployMutation.isPending}
-        className="fixed bottom-36 md:bottom-24 right-4 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center z-[60] touch-target group"
+        className="fixed bottom-36 md:bottom-24 right-4 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl active:bg-blue-800 active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center z-[60] touch-target group"
         title={deployMutation.isPending ? "Deploying..." : "Deploy to production"}
       >
         {deployMutation.isPending ? (

@@ -4,6 +4,7 @@ import './globals.css';
 import { Providers } from './providers';
 import { PWAInstall } from '@/components/PWAInstall';
 import { BottomNav } from '@/components/BottomNav';
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -46,6 +47,7 @@ export default function RootLayout({
           {children}
           <BottomNav />
           <PWAInstall />
+          <Toaster position="top-center" richColors closeButton />
         </Providers>
       </body>
     </html>

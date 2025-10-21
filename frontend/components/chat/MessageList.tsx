@@ -52,9 +52,20 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
       ))}
 
       {isLoading && (
-        <div className="flex items-center gap-3 text-gray-500 py-2">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          <span className="text-sm">Claude is thinking...</span>
+        <div className="flex items-start gap-3 py-2">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+            <span className="text-sm">🤖</span>
+          </div>
+          <div className="flex-1 bg-white rounded-lg border border-gray-200 p-4">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+              </div>
+              <span className="text-sm text-gray-500">Claude is thinking...</span>
+            </div>
+          </div>
         </div>
       )}
 

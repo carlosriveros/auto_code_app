@@ -21,8 +21,31 @@ export default function FilesPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="h-full flex flex-col md:flex-row">
+        <div className="w-full md:w-80 border-b md:border-b-0 md:border-r bg-white overflow-y-auto">
+          <div className="p-4 border-b">
+            <div className="h-6 w-24 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-3 w-16 bg-gray-100 rounded animate-pulse mt-2"></div>
+          </div>
+          <div className="py-2">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 px-4 py-2"
+                style={{ paddingLeft: `${(i % 3) * 16 + 16}px` }}
+              >
+                <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                <div
+                  className="h-4 bg-gray-200 rounded animate-pulse"
+                  style={{ width: `${60 + (i % 5) * 30}px` }}
+                ></div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex-1 flex items-center justify-center text-gray-400">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
       </div>
     );
   }

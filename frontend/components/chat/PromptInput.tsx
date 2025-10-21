@@ -54,7 +54,7 @@ export function PromptInput({ onSend, disabled }: PromptInputProps) {
         <button
           type="submit"
           disabled={disabled || !input.trim()}
-          className="touch-target w-12 h-12 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0 self-end"
+          className="touch-target w-12 h-12 bg-blue-600 text-white rounded-xl hover:bg-blue-700 active:bg-blue-800 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0 self-end"
         >
           <Send className="h-5 w-5" />
         </button>
